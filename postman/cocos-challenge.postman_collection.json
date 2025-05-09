@@ -1,0 +1,106 @@
+{
+  "info": {
+    "name": "Cocos Challenge API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_postman_id": "cocos-challenge-2025-05-08T16:57:33.079463"
+  },
+  "item": [
+    {
+      "name": "Get Portfolio",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/portfolio/1",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "portfolio",
+            "1"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Search Instruments",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/instruments?query=gal",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "instruments"
+          ],
+          "query": [
+            {
+              "key": "query",
+              "value": "gal"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Send Market BUY Order",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"userId\": 1,\n  \"instrumentId\": 2,\n  \"side\": \"BUY\",\n  \"type\": \"MARKET\",\n  \"size\": 5\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/orders",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "orders"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Send Market SELL Order",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"userId\": 1,\n  \"instrumentId\": 2,\n  \"side\": \"SELL\",\n  \"type\": \"MARKET\",\n  \"size\": 2\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/orders",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "orders"
+          ]
+        }
+      }
+    }
+  ]
+}
