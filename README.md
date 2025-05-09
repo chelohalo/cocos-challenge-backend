@@ -1,73 +1,105 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# 🏦 Cocos Challenge - Backend
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Este proyecto implementa una API REST con NestJS + TypeORM + PostgreSQL para resolver el challenge técnico de Cocos Capital.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+---
 
-## Description
+## 📌 Endpoints implementados
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+### 1. `GET /portfolio/:userId`
+Devuelve:
+- Total de pesos disponibles (`cash`)
+- Valor total del portfolio (cash + posiciones)
+- Detalle de las posiciones del usuario con:
+  - Ticker y nombre del activo
+  - Cantidad de acciones
+  - Precio actual (`close`)
+  - Valor total de la posición
+  - Rendimiento diario (%), basado en `previousClose` y `close`
 
-## Installation
+---
 
-```bash
-$ npm install
+### 2. `GET /instruments?query=algo`
+Permite buscar instrumentos por:
+- Ticker parcial o completo
+- Nombre parcial o completo
+
+---
+
+### 3. `POST /orders`
+Crea una orden con los siguientes campos:
+
+```json
+{
+  "userId": 1,
+  "instrumentId": 66,
+  "side": "BUY | SELL | CASH_IN | CASH_OUT",
+  "type": "MARKET | LIMIT",
+  "size": 10
+}
 ```
 
-## Running the app
+- Las órdenes `MARKET` se ejecutan automáticamente si hay fondos o acciones suficientes → `FILLED`
+- Si no hay fondos → `REJECTED`
+- Las órdenes `LIMIT` se guardan en estado `NEW`
+
+---
+
+### 4. `PATCH /orders/:id/cancel`
+Permite cancelar una orden de tipo `LIMIT` que aún esté en estado `NEW`.  
+Si la orden no existe o no puede ser cancelada, devuelve un error apropiado.
+
+---
+
+## 🧪 Postman Collection
+
+Se incluye una colección para probar todos los endpoints:
+
+📁 `postman/cocos-challenge.postman_collection.json`
+
+
+---
+
+## 🧪 Tests
+
+Se incluye un test funcional (`e2e`) para el endpoint de creación de órdenes.
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+npm run test:e2e
 ```
 
-## Test
+---
+
+## ⚙️ Configuración local
+
+### 1. Clonar el repo
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+git clone git@github.com:chelohalo/cocos-challenge-backend.git
+cd cocos-challenge-backend
 ```
 
-## Support
+### 2. Instalar dependencias
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+```bash
+npm install
+```
 
-## Stay in touch
+### 3. Crear archivo `.env`
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+```env
+PGHOST=...
+PGUSER=...
+PGPASSWORD=...
+PGDATABASE=...
+PORT=5432
+```
 
-## License
+### 4. Ejecutar la app
 
-Nest is [MIT licensed](LICENSE).
+```bash
+npm run start:dev
+```
+
+
+---
