@@ -12,5 +12,5 @@ export class Instrument {
   name: string;
 
   @Column()
-  type: string; // e.g., 'ACCION' o 'MONEDA'
+  type: string;
 }
