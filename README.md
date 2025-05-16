@@ -7,7 +7,9 @@ Este proyecto implementa una API REST con NestJS + TypeORM + PostgreSQL para res
 ## 📌 Endpoints implementados
 
 ### 1. `GET /portfolio/:userId`
+
 Devuelve:
+
 - Total de pesos disponibles (`cash`)
 - Valor total del portfolio (cash + posiciones)
 - Detalle de las posiciones del usuario con:
@@ -20,19 +22,22 @@ Devuelve:
 ---
 
 ### 2. `GET /instruments?query=algo`
+
 Permite buscar instrumentos por:
+
 - Ticker parcial o completo
 - Nombre parcial o completo
 
 ---
 
 ### 3. `POST /orders`
+
 Crea una orden con los siguientes campos:
 
 ```json
 {
   "userId": 1,
-  "instrumentId": 66,
+  "instrumentid": 66,
   "side": "BUY | SELL | CASH_IN | CASH_OUT",
   "type": "MARKET | LIMIT",
   "size": 10
@@ -46,6 +51,7 @@ Crea una orden con los siguientes campos:
 ---
 
 ### 4. `PATCH /orders/:id/cancel`
+
 Permite cancelar una orden de tipo `LIMIT` que aún esté en estado `NEW`.  
 Si la orden no existe o no puede ser cancelada, devuelve un error apropiado.
 
@@ -56,7 +62,6 @@ Si la orden no existe o no puede ser cancelada, devuelve un error apropiado.
 Se incluye una colección para probar todos los endpoints:
 
 📁 `postman/cocos-challenge.postman_collection.json`
-
 
 ---
 
@@ -100,6 +105,5 @@ PORT=5432
 ```bash
 npm run start:dev
 ```
-
 
 ---
