@@ -23,7 +23,7 @@ export class CreateOrderDto {
   userId: number;
 
   @IsInt()
-  instrumentId: number;
+  instrumentid: number;
 
   @IsEnum(OrderSide)
   side: OrderSide;

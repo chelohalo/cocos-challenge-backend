@@ -5,11 +5,11 @@ export class Order {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ name: 'instrumentid' }) // o 'instrument_id' si lo corregís
-  instrumentId: number;
+  @Column()
+  instrumentid: number;
 
-  @Column({ name: 'userid' }) // o 'user_id' si corregís nombre
-  userId: number;
+  @Column()
+  userid: number;
 
   @Column('float')
   size: number;

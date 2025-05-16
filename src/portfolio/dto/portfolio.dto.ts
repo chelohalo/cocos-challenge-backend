@@ -1,5 +1,5 @@
 export interface PositionDTO {
-  instrumentId: number;
+  instrumentid: number;
   ticker: string;
   name: string;
   quantity: number;

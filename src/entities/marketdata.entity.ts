@@ -5,8 +5,8 @@ export class MarketData {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ name: 'instrumentid' })
-  instrumentId: number;
+  @Column()
+  instrumentid: number;
 
   @Column('float', { nullable: true })
   high: number;
@@ -20,9 +20,9 @@ export class MarketData {
   @Column('float')
   close: number;
 
-  @Column({ name: 'previousclose', type: 'float' })
+  @Column({ type: 'float' })
   previousClose: number;
 
-  @Column({ name: 'date' })
-  datetime: Date;
+  @Column()
+  date: Date;
 }

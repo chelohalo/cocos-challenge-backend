@@ -5,9 +5,10 @@ import { OrdersController } from './orders.controller';
 import { Order } from '../entities/order.entity';
 import { MarketData } from '../entities/marketdata.entity';
 import { User } from '../entities/user.entity';
+import { SharedModule } from '../shared/shared.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Order, MarketData, User])],
+  imports: [TypeOrmModule.forFeature([Order, MarketData, User]), SharedModule],
   controllers: [OrdersController],
   providers: [OrdersService],
 })

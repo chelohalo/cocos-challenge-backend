@@ -9,6 +9,7 @@ import { Order } from '../entities/order.entity';
 import { MarketData } from '../entities/marketdata.entity';
 import { User } from '../entities/user.entity';
 import { CreateOrderDto } from './dto/create-order.dto';
+import { CashService } from '../shared/cash.service';
 
 @Injectable()
 export class OrdersService {
@@ -17,31 +18,12 @@ export class OrdersService {
     @InjectRepository(MarketData)
     private readonly marketRepo: Repository<MarketData>,
     @InjectRepository(User) private readonly userRepo: Repository<User>,
+    private readonly cashService: CashService,
   ) {}
-
-  private async getCash(userId: number): Promise<number> {
-    const { cash } = await this.orderRepo
-      .createQueryBuilder('o')
-      .select(
-        `
-        SUM(CASE 
-          WHEN o.side = 'CASH_IN' THEN o.size 
-          WHEN o.side = 'CASH_OUT' THEN -o.size 
-          WHEN o.side = 'BUY' THEN -o.size * o.price 
-          WHEN o.side = 'SELL' THEN o.size * o.price 
-          ELSE 0 END)`,
-        'cash',
-      )
-      .where('o.userId = :userId', { userId })
-      .andWhere('o.status = :status', { status: 'FILLED' })
-      .getRawOne();
-
-    return parseFloat(cash) || 0;
-  }
 
   private async getShares(
     userId: number,
-    instrumentId: number,
+    instrumentid: number,
   ): Promise<number> {
     const { shares } = await this.orderRepo
       .createQueryBuilder('o')
@@ -54,7 +36,7 @@ export class OrdersService {
         'shares',
       )
       .where('o.userId = :userId', { userId })
-      .andWhere('o.instrumentId = :instrumentId', { instrumentId })
+      .andWhere('o.instrumentid = :instrumentid', { instrumentid })
       .andWhere('o.status = :status', { status: 'FILLED' })
       .getRawOne();
 
@@ -62,11 +44,11 @@ export class OrdersService {
   }
 
   async create(dto: CreateOrderDto): Promise<Order> {
-    const { userId, instrumentId, side, size, type } = dto;
+    const { userId, instrumentid, side, size, type } = dto;
 
     const market = await this.marketRepo.findOne({
-      where: { instrumentId },
-      order: { datetime: 'DESC' },
+      where: { instrumentid },
+      order: { date: 'DESC' },
     });
     if (!market) throw new NotFoundException('Market price not found');
 
@@ -77,10 +59,10 @@ export class OrdersService {
 
     if (type === 'MARKET') {
       if (side === 'BUY') {
-        const cash = await this.getCash(userId);
+        const cash = await this.cashService.getCash(userId);
         status = cash >= total ? 'FILLED' : 'REJECTED';
       } else if (side === 'SELL') {
-        const shares = await this.getShares(userId, instrumentId);
+        const shares = await this.getShares(userId, instrumentid);
         status = shares >= size ? 'FILLED' : 'REJECTED';
       } else {
         status = 'REJECTED';

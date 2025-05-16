@@ -1,0 +1,76 @@
+{
+  "info": {
+    "_postman_id": "9173a526-1553-4190-9306-914916dc4d8c",
+    "name": "Cocos Challenge API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+    "_exporter_id": "17661619"
+  },
+  "item": [
+    {
+      "name": "Get Portfolio",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "http://localhost:3000/portfolio/1"
+      },
+      "response": []
+    },
+    {
+      "name": "Search Instruments",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/instruments?query=gal",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["instruments"],
+          "query": [
+            {
+              "key": "query",
+              "value": "gal"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Send Market BUY Order",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"userId\": 1,\n  \"instrumentid\": 2,\n  \"side\": \"BUY\",\n  \"type\": \"LIMIT\",\n  \"size\": 5\n}"
+        },
+        "url": "http://localhost:3000/orders"
+      },
+      "response": []
+    },
+    {
+      "name": "Send Market SELL Order",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": ""
+        },
+        "url": "http://localhost:3000/orders/2/cancel"
+      },
+      "response": []
+    }
+  ]
+}
