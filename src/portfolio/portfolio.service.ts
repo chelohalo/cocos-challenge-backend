@@ -76,9 +76,9 @@ export class PortfolioService {
     return result;
   }
 
-  async getPortfolio(userId: number): Promise<PortfolioDTO> {
-    const cash = await this.cashService.getCash(userId);
-    const positions = await this.getPositions(userId);
+  async getPortfolio(userid: number): Promise<PortfolioDTO> {
+    const cash = await this.cashService.getCash(userid);
+    const positions = await this.getPositions(userid);
     const assetsValue = positions.reduce((sum, p) => sum + p.totalValue, 0);
 
     return {

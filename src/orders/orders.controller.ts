@@ -1,4 +1,11 @@
-import { Controller, Post, Body, Patch, Param } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Patch,
+  Param,
+  BadRequestException,
+} from '@nestjs/common';
 import { OrdersService } from './orders.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { Order } from '../entities/order.entity';
@@ -9,7 +16,13 @@ export class OrdersController {
 
   @Post()
   async create(@Body() dto: CreateOrderDto): Promise<Order> {
-    return this.ordersService.create(dto);
+    const order = await this.ordersService.create(dto);
+    if (order.status === 'REJECTED') {
+      throw new BadRequestException(
+        'Insufficient funds or shares for this order',
+      );
+    }
+    return order;
   }
 
   @Patch(':id/cancel')

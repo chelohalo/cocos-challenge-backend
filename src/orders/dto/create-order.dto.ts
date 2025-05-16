@@ -20,7 +20,7 @@ export enum OrderType {
 
 export class CreateOrderDto {
   @IsInt()
-  userId: number;
+  userid: number;
 
   @IsInt()
   instrumentid: number;

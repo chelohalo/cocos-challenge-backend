@@ -22,29 +22,31 @@ export class OrdersService {
   ) {}
 
   private async getShares(
-    userId: number,
+    userid: number,
     instrumentid: number,
   ): Promise<number> {
-    const { shares } = await this.orderRepo
-      .createQueryBuilder('o')
-      .select(
-        `
-        SUM(CASE 
-          WHEN o.side = 'BUY' THEN o.size 
-          WHEN o.side = 'SELL' THEN -o.size 
-          ELSE 0 END)`,
-        'shares',
-      )
-      .where('o.userId = :userId', { userId })
-      .andWhere('o.instrumentid = :instrumentid', { instrumentid })
-      .andWhere('o.status = :status', { status: 'FILLED' })
-      .getRawOne();
+    const orders = await this.orderRepo.find({
+      where: {
+        userid: userid,
+        instrumentid: instrumentid,
+        status: 'FILLED',
+      },
+    });
 
-    return parseFloat(shares) || 0;
+    let shares = 0;
+    for (const order of orders) {
+      if (order.side === 'BUY') {
+        shares += order.size;
+      } else if (order.side === 'SELL') {
+        shares -= order.size;
+      }
+    }
+
+    return shares;
   }
 
   async create(dto: CreateOrderDto): Promise<Order> {
-    const { userId, instrumentid, side, size, type } = dto;
+    const { userid, instrumentid, side, size, type } = dto;
 
     const market = await this.marketRepo.findOne({
       where: { instrumentid },
@@ -59,23 +61,27 @@ export class OrdersService {
 
     if (type === 'MARKET') {
       if (side === 'BUY') {
-        const cash = await this.cashService.getCash(userId);
+        const cash = await this.cashService.getCash(userid);
         status = cash >= total ? 'FILLED' : 'REJECTED';
       } else if (side === 'SELL') {
-        const shares = await this.getShares(userId, instrumentid);
+        const shares = await this.getShares(userid, instrumentid);
         status = shares >= size ? 'FILLED' : 'REJECTED';
       } else {
         status = 'REJECTED';
       }
     }
 
+    const now = new Date();
+    now.setMilliseconds(0);
+
     const order = this.orderRepo.create({
       ...dto,
+      instrumentid,
+      userid,
       price,
       status,
-      datetime: new Date(),
+      datetime: now,
     });
-
     return this.orderRepo.save(order);
   }
 

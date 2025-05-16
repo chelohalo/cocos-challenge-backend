@@ -8,20 +8,20 @@ export class MarketData {
   @Column()
   instrumentid: number;
 
-  @Column('float', { nullable: true })
+  @Column('float')
   high: number;
 
-  @Column('float', { nullable: true })
+  @Column('float')
   low: number;
 
-  @Column('float', { nullable: true })
+  @Column('float')
   open: number;
 
   @Column('float')
   close: number;
 
   @Column({ type: 'float' })
-  previousClose: number;
+  previousclose: number;
 
   @Column()
   date: Date;

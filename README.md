@@ -6,7 +6,7 @@ Este proyecto implementa una API REST con NestJS + TypeORM + PostgreSQL para res
 
 ## 📌 Endpoints implementados
 
-### 1. `GET /portfolio/:userId`
+### 1. `GET /portfolio/:userid`
 
 Devuelve:
 
@@ -17,7 +17,7 @@ Devuelve:
   - Cantidad de acciones
   - Precio actual (`close`)
   - Valor total de la posición
-  - Rendimiento diario (%), basado en `previousClose` y `close`
+  - Rendimiento diario (%), basado en `previousclose` y `close`
 
 ---
 
@@ -36,7 +36,7 @@ Crea una orden con los siguientes campos:
 
 ```json
 {
-  "userId": 1,
+  "userid": 1,
   "instrumentid": 66,
   "side": "BUY | SELL | CASH_IN | CASH_OUT",
   "type": "MARKET | LIMIT",

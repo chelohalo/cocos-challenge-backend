@@ -22,7 +22,7 @@ describe('Orders (e2e)', () => {
 
   it('should create a market BUY order and return FILLED or REJECTED', async () => {
     const res = await request(app.getHttpServer()).post('/orders').send({
-      userId: 1,
+      userid: 1,
       instrumentid: 35,
       side: 'BUY',
       type: 'MARKET',
