@@ -48,7 +48,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"userId\": 1,\n  \"instrumentid\": 2,\n  \"side\": \"BUY\",\n  \"type\": \"LIMIT\",\n  \"size\": 5\n}"
+          "raw": "{\n  \"userid\": 1,\n  \"instrumentid\": 2,\n  \"side\": \"BUY\",\n  \"type\": \"LIMIT\",\n  \"size\": 5\n}"
         },
         "url": "http://localhost:3000/orders"
       },

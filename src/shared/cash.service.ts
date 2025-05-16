@@ -9,13 +9,13 @@ export class CashService {
     @InjectRepository(Order) private readonly orderRepo: Repository<Order>,
   ) {}
 
-  async getCash(userId: number): Promise<number> {
+  async getCash(userid: number): Promise<number> {
     const result = await this.orderRepo
       .createQueryBuilder('o')
       .select('o.side', 'side')
       .addSelect('o.size', 'size')
       .addSelect('o.price', 'price')
-      .where('o.userId = :userId', { userId })
+      .where('o.userid = :userid', { userid })
       .andWhere('o.status = :status', { status: 'FILLED' })
       .getRawMany();
 

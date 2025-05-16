@@ -6,8 +6,8 @@ import { PortfolioDTO } from './dto/portfolio.dto';
 export class PortfolioController {
   constructor(private readonly service: PortfolioService) {}
 
-  @Get(':userId')
-  async getPortfolio(@Param('userId') userId: number): Promise<PortfolioDTO> {
-    return this.service.getPortfolio(userId);
+  @Get(':userid')
+  async getPortfolio(@Param('userid') userid: number): Promise<PortfolioDTO> {
+    return this.service.getPortfolio(userid);
   }
 }

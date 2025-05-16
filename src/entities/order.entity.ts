@@ -14,7 +14,7 @@ export class Order {
   @Column('float')
   size: number;
 
-  @Column('float', { nullable: true })
+  @Column('float')
   price: number;
 
   @Column()
@@ -26,6 +26,6 @@ export class Order {
   @Column()
   status: 'NEW' | 'FILLED' | 'REJECTED' | 'CANCELLED';
 
-  @Column()
+  @Column({ type: 'timestamp', precision: 0 })
   datetime: Date;
 }
